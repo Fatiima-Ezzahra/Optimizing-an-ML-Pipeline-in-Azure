@@ -29,18 +29,44 @@ Then, we define a SKLearn estimator to be later passed to the HyperDrive Config 
 
 We define a HyperDrive Config using the estimator, parameter sampler and an early termination policy. Then, we submit the experiment.
 
-We use an early termiation policy to prevent experiments from running for a long time and using up resources.
-
 After the run is completed, we found that the best model has C=0.1, max_iter=150, and Accuracy=0.9112797167425392.
 
 ![best model using hdr](images/best_model_hdr.png)
+
+### Benefits of the chosen Parameter Sampler
+We use a parameter sampler to define the different hyperparameters we want to tune, as well as the different values we want to test out (the search space).
+
+For this project, I defined a discrete search space for both hyperparemeters (C and max_iter). I also used a Random sampling method. In random sampling, hyperparameter values are randomly selected from the defined search space. 
+
+Hyperdrive can then try all the combinations of choices from the search space to do hyperparameter tuning and find the best model that gives us the highest accuracy.
+
+### Benefits of the chosen early termination policy
+We use an early termiation policy to prevent experiments from running for a long time and using up resources. So, it improves computational efficiency.
+
+For this project, I used a Bandit policy for early termination with the parameters evaluation_interval=2 and slack_factor=0.1.
+
+The slack_factor is the amount of slack allowed with respect to the best performing training run. The evaluation_interval is the frequency for applying the policy.
 
 ## AutoML
 To use AutoML in Azure, we first define a AutoMLConfig in which we specify the task, training dataset, label column name, primary metric, max concurrent iterations, and iterations.
 
 Azure AutoML tried different models such as : RandomForests, BoostedTrees, XGBoost, LightGBM, SGDClassifier, VotingEnsemble, etc. 
 
-The best model was a Voting Ensemble that has Accuracy=0.9175374447606296.
+The best model was a Voting Ensemble that has Accuracy=0.9170172267033548. 
+
+Ensemble learning improves machine learning results and predictive performance by combining multiple models as opposed to using single models. The Voting Ensemble model predicts based on the weighted average of predicted class probabilities.
+
+The best model had the following parameter values:
+* **l1_ratio=0.8979591836734693**
+* **learning_rate='constant'**. Having a constant learning_rate, instead of adaptative learning rate.
+* **loss='modified_huber'**. Modified Huber loss.
+* **max_iter=1000**. Maximum iterations.
+* **n_jobs=1**. Number of parallel threads.
+* **penalty='none'**. No penalty.
+* **power_t=0.6666666666666666**
+* **random_state=None**. random_state is the seed used by the random number generator. If None, the random number generator is the RandomState instance used by np.random.
+* **learning_rate=0.1**
+* **boosting_type='gbdt'**. Traditional Gradient Boosting Decision Tree.
 
 ![best model using automl](images/votingensemble.png)
 
@@ -57,12 +83,14 @@ And the Top Features :
 ![top k features](images/top_k_2.png)
 
 ## Pipeline comparison
-Overall, there wasn't a big difference in accuracy between AutoML and HyperDrive.
+Overall, there wasn't a big difference in accuracy between AutoML and HyperDrive. For the HyperDrive model, we had an accuracy of 0.9113. Whereas, for the AutoML model, the accuracy was 0.9170.
 
 However, in terms of architecture, AutoML was superior. With AutoML, we tried many different models that we could not have tried using HyperDrive in the same amount of time. With only one config, we could test various models. If we wanted to do the same thing using HyperDrive, we would define a config for each model.
 
 ## Future work
-For future experiments, I would want to try different values in the AutoML approach for cross validation, and try other parameters to see if they will impact the final results.
+For future experiments, I might try more hyperparameters for the HyperDrive model, and test different sampling methods as well as have a larger search space to maximize the search. I want to also try different models and see if I can get a better accuracy and train a more robust model for inferencing.
+
+For AutoML, I want to try implementing explicit model complexity limitations to prevent over-fitting. Also, test out different parameter values such as number of folds for Cross Validation. I also want to try working with raw data only and passing it to AutoML to see how it will handle it, if it will affect the chosenn model and the model accuracy.
 
 ## Proof of cluster clean up
 ![deleted compute](images/deleted_compute.png)
