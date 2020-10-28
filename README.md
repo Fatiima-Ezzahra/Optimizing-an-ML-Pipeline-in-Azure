@@ -40,6 +40,8 @@ For this project, I defined a discrete search space for both hyperparemeters (C 
 
 Hyperdrive can then try all the combinations of choices from the search space to do hyperparameter tuning and find the best model that gives us the highest accuracy.
 
+The major advantage of simple random sampling is that the samples are chosen using probability sampling methods and thus allow for generalization or inferences to the larger population. Grid and random search are completely uninformed by past evaluations, unlike Bayesian Sampling. However to simplify the search, I chose a Random Parameter Sampler.
+
 ### Benefits of the chosen early termination policy
 We use an early termiation policy to prevent experiments from running for a long time and using up resources. So, it improves computational efficiency.
 
@@ -57,15 +59,14 @@ The best model was a Voting Ensemble that has Accuracy=0.9170172267033548.
 Ensemble learning improves machine learning results and predictive performance by combining multiple models as opposed to using single models. The Voting Ensemble model predicts based on the weighted average of predicted class probabilities.
 
 The best model had the following parameter values:
-* **l1_ratio=0.8979591836734693**
+* **l1_ratio=0.8979591836734693**. Parameter in a [0,1] range weighting l1 vs l2 regularisation.
 * **learning_rate='constant'**. Having a constant learning_rate, instead of adaptative learning rate.
-* **loss='modified_huber'**. Modified Huber loss.
+* **loss='modified_huber'**. Modified Huber loss, default="".
 * **max_iter=1000**. Maximum iterations.
 * **n_jobs=1**. Number of parallel threads.
 * **penalty='none'**. No penalty.
-* **power_t=0.6666666666666666**
 * **random_state=None**. random_state is the seed used by the random number generator. If None, the random number generator is the RandomState instance used by np.random.
-* **learning_rate=0.1**
+* **learning_rate=0.1**. Default value for learning rate.
 * **boosting_type='gbdt'**. Traditional Gradient Boosting Decision Tree.
 
 ![best model using automl](images/votingensemble.png)
@@ -83,14 +84,18 @@ And the Top Features :
 ![top k features](images/top_k_2.png)
 
 ## Pipeline comparison
-Overall, there wasn't a big difference in accuracy between AutoML and HyperDrive. For the HyperDrive model, we had an accuracy of 0.9113. Whereas, for the AutoML model, the accuracy was 0.9170.
+Overall, there wasn't a big difference in accuracy between AutoML and HyperDrive. For the HyperDrive model, we had an accuracy of 0.9113. Whereas, for the AutoML model, the accuracy was 0.9170. So, we only had a 0.0057 difference between the two approaches.
 
 However, in terms of architecture, AutoML was superior. With AutoML, we tried many different models that we could not have tried using HyperDrive in the same amount of time. With only one config, we could test various models. If we wanted to do the same thing using HyperDrive, we would define a config for each model.
 
 ## Future work
 For future experiments, I might try more hyperparameters for the HyperDrive model, and test different sampling methods as well as have a larger search space to maximize the search. I want to also try different models and see if I can get a better accuracy and train a more robust model for inferencing.
 
-For AutoML, I want to try implementing explicit model complexity limitations to prevent over-fitting. Also, test out different parameter values such as number of folds for Cross Validation. I also want to try working with raw data only and passing it to AutoML to see how it will handle it, if it will affect the chosenn model and the model accuracy.
+First, trying a Bayesian Parameter Sampler might improve model accuracy and optimize time spent on Hyperparameter Tuning since it keeps track of past evaluation results and uses them to choose the next values to test. Also, having a larger search space means more possible improvement in choosing the most optimal hyperparameter values, thus improving the accuracy. In the case of model choice, I used a simple Logistic Regression model. However, choosing a more complex model might help in improving the accuracy. Finally, doing some feature engineering might come in handy. We already have some features in the data, but exploring the data more, and extracting new features and maybe getting rid of features and don't contribute as much to the inferencing might help us train a more robust model.
+
+For AutoML, I want to try implementing explicit model complexity limitations to prevent over-fitting. Also, test out different parameter values such as number of folds for Cross Validation. I also want to try working with raw data only and passing it to AutoML to see how it will handle it, if it will affect the chosen model and the model accuracy.
+
+Reducing over-fitting is an important task that improves model accuracy. If a model is over-fitting, it might have a high accuracy with training data, but will fail when performing inferencing on test data.
 
 ## Proof of cluster clean up
 ![deleted compute](images/deleted_compute.png)
