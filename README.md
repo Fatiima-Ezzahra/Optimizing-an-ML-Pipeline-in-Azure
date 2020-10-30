@@ -40,7 +40,7 @@ For this project, I defined a discrete search space for both hyperparemeters (C 
 
 Hyperdrive can then try all the combinations of choices from the search space to do hyperparameter tuning and find the best model that gives us the highest accuracy.
 
-The major advantage of simple random sampling is that the samples are chosen using probability sampling methods and thus allow for generalization or inferences to the larger population. Grid and random search are completely uninformed by past evaluations, unlike Bayesian Sampling. However to simplify the search, I chose a Random Parameter Sampler.
+Random sampling is a type of probability sampling where everyone in the entire target population has an equal chance of being selected, this allows for generalization or inferences to the larger population. Grid and random search are completely uninformed by past evaluations, unlike Bayesian Sampling. However to simplify the search, I chose a Random Parameter Sampler.
 
 ### Benefits of the chosen early termination policy
 We use an early termiation policy to prevent experiments from running for a long time and using up resources. So, it improves computational efficiency.
