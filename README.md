@@ -1,5 +1,16 @@
 # Optimizing an ML Pipeline in Azure
 
+## Table of content
+* [Overview](#overview)
+* [Summary](#summary)
+* [Scikit-learn Pipeline](#scikit-learn-pipeline)
+  - [Benefits of the chosen Parameter Sampler](#benefits-of-the-chosen-parameter-sampler)
+  - [Benefits of the chosen early termination policy](#benefits-of-the-chosen-early-termination-policy)
+* [AutoML](#automl)
+* [Pipeline comparison](#pipeline-comparison)
+* [Future work](#future-work)
+* [Proof of cluster clean up](#proof-of-cluster-clean-up)
+
 ## Overview
 This project is part of the Udacity Azure ML Nanodegree.
 In this project, we build and optimize an Azure ML pipeline using the Python SDK and a provided Scikit-learn model.
